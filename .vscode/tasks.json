@@ -1,0 +1,67 @@
+{
+	"version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "build project",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "mkdir",
+                "clean",
+                "cmake",
+                "make clean",
+                "make",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "mkdir",
+            "type": "shell",
+            "command": "mkdir",
+			"args": ["-p", "${workspaceFolder}/build"],
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "rm",
+			"args": ["-rf", "${workspaceFolder}/build/*"],
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+        },
+        {
+            "label": "cmake",
+            "type": "shell",
+            "command": "cmake ..",
+            "options": {
+                "cwd": "${workspaceFolder}/build",
+            },
+        },
+        {
+            "label": "make clean",
+            "type": "shell",
+            "command": "make clean",
+            "options": {
+                "cwd": "${workspaceFolder}/build",
+            },
+        },
+        {
+            "label": "make",
+            "type": "shell",
+            "command": "make",
+			"args": ["-j", "16"],
+            "problemMatcher": ["$gcc"],
+            "options": {
+                "cwd": "${workspaceFolder}/build",
+            },
+        }
+    ]
+}
