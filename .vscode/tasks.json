@@ -14,7 +14,7 @@
             ],
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             }
         },
         {
@@ -62,6 +62,19 @@
             "options": {
                 "cwd": "${workspaceFolder}/build",
             },
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "./app",
+            "options": {
+                "cwd": "${workspaceFolder}/build/bin",
+            },
+            "dependsOn": ["build project"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }
