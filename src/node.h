@@ -17,6 +17,13 @@ namespace ed = ax::NodeEditor;
 
 using namespace ax;
 
+struct Counter {
+    static int m_NextId;
+
+    static int GetNextId() {
+        return m_NextId++;
+    }
+};
 
 enum class PinType
 {
@@ -78,6 +85,20 @@ struct Node
         ID(id), Name(name), Color(color), Type(NodeType::Blueprint), Size(0, 0)
     {
     }
+
+    void assemble() {
+        for (auto& input : this->Inputs)
+        {
+            input.Node = this;
+            input.Kind = PinKind::Input;
+        }
+
+        for (auto& output : this->Outputs)
+        {
+            output.Node = this;
+            output.Kind = PinKind::Output;
+        }
+    }
 };
 
 struct Link
@@ -94,3 +115,18 @@ struct Link
     {
     }
 };
+
+// void BuildNode(Node* node)
+// {
+//     for (auto& input : node->Inputs)
+//     {
+//         input.Node = node;
+//         input.Kind = PinKind::Input;
+//     }
+
+//     for (auto& output : node->Outputs)
+//     {
+//         output.Node = node;
+//         output.Kind = PinKind::Output;
+//     }
+// }
