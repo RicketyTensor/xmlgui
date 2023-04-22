@@ -13,6 +13,10 @@
 #include <map>
 #include <algorithm>
 #include <utility>
+#include <filesystem>
+
+#include "node.h"
+#include "xml/xml_reader.h"
 
 
 static inline ImRect ImGui_GetItemRect()
@@ -51,83 +55,6 @@ static ed::EditorContext* m_Editor = nullptr;
 //        return false;
 //}
 
-enum class PinType
-{
-    Flow,
-    Bool,
-    Int,
-    Float,
-    String,
-    Object,
-    Function,
-    Delegate,
-};
-
-enum class PinKind
-{
-    Output,
-    Input
-};
-
-enum class NodeType
-{
-    Blueprint,
-    Simple,
-    Tree,
-    Comment,
-    Houdini
-};
-
-struct Node;
-
-struct Pin
-{
-    ed::PinId   ID;
-    ::Node*     Node;
-    std::string Name;
-    PinType     Type;
-    PinKind     Kind;
-
-    Pin(int id, const char* name, PinType type):
-        ID(id), Node(nullptr), Name(name), Type(type), Kind(PinKind::Input)
-    {
-    }
-};
-
-struct Node
-{
-    ed::NodeId ID;
-    std::string Name;
-    std::vector<Pin> Inputs;
-    std::vector<Pin> Outputs;
-    ImColor Color;
-    NodeType Type;
-    ImVec2 Size;
-
-    std::string State;
-    std::string SavedState;
-
-    Node(int id, const char* name, ImColor color = ImColor(255, 255, 255)):
-        ID(id), Name(name), Color(color), Type(NodeType::Blueprint), Size(0, 0)
-    {
-    }
-};
-
-struct Link
-{
-    ed::LinkId ID;
-
-    ed::PinId StartPinID;
-    ed::PinId EndPinID;
-
-    ImColor Color;
-
-    Link(ed::LinkId id, ed::PinId startPinId, ed::PinId endPinId):
-        ID(id), StartPinID(startPinId), EndPinID(endPinId), Color(255, 255, 255)
-    {
-    }
-};
-
 struct NodeIdLess
 {
     bool operator()(const ed::NodeId& lhs, const ed::NodeId& rhs) const
@@ -148,9 +75,8 @@ static bool Splitter(bool split_vertically, float thickness, float* size1, float
     return SplitterBehavior(bb, id, split_vertically ? ImGuiAxis_X : ImGuiAxis_Y, size1, size2, min_size1, min_size2, 0.0f);
 }
 
-struct Example:
-    public Application
-{
+struct XMLGUI: public Application {   
+
     using Application::Application;
 
     int GetNextId()
@@ -499,7 +425,7 @@ struct Example:
 
         config.LoadNodeSettings = [](ed::NodeId nodeId, char* data, void* userPointer) -> size_t
         {
-            auto self = static_cast<Example*>(userPointer);
+            auto self = static_cast<XMLGUI*>(userPointer);
 
             auto node = self->FindNode(nodeId);
             if (!node)
@@ -512,7 +438,7 @@ struct Example:
 
         config.SaveNodeSettings = [](ed::NodeId nodeId, const char* data, size_t size, ed::SaveReasonFlags reason, void* userPointer) -> bool
         {
-            auto self = static_cast<Example*>(userPointer);
+            auto self = static_cast<XMLGUI*>(userPointer);
 
             auto node = self->FindNode(nodeId);
             if (!node)
@@ -528,9 +454,12 @@ struct Example:
         m_Editor = ed::CreateEditor(&config);
         ed::SetCurrentEditor(m_Editor);
 
-        Node* node;
+        // Read XML
+        m_Nodes = xmlgui::XMLReader::read_xml("@MY_VAR@/test.xml");
+
+        // Node* node;
         // node = SpawnInputActionNode();      ed::SetNodePosition(node->ID, ImVec2(-252, 220));
-        node = SpawnBranchNode();           ed::SetNodePosition(node->ID, ImVec2(10, 10));
+        // node = SpawnBranchNode();           ed::SetNodePosition(node->ID, ImVec2(10, 10));
         // node = SpawnDoNNode();              ed::SetNodePosition(node->ID, ImVec2(-238, 504));
         // node = SpawnOutputActionNode();     ed::SetNodePosition(node->ID, ImVec2(71, 80));
         // node = SpawnSetTimerNode();         ed::SetNodePosition(node->ID, ImVec2(168, 316));
@@ -1815,10 +1744,10 @@ struct Example:
 
 int Main(int argc, char** argv)
 {
-    Example exampe("Blueprints", argc, argv);
+    XMLGUI app("xmlgui", argc, argv);
 
-    if (exampe.Create())
-        return exampe.Run();
+    if (app.Create())
+        return app.Run();
 
     return 0;
 }

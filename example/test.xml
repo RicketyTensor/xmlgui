@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:xmlRoot xmlns:tns="http://www.example.org/schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/schema schema.xsd ">
+  <tns:children>
+    <tns:child id="135" age="12"/>
+    <tns:child id="bob" age="16"/>
+  </tns:children>
+</tns:xmlRoot>

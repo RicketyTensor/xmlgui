@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/schema" xmlns:tns="http://www.example.org/schema" elementFormDefault="qualified">
+
+    <element name="xmlRoot" type="tns:xmlRootType"></element>
+    
+    <complexType name="xmlRootType">
+    	<sequence>
+    		<element name="children" type="tns:childrenType"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="childrenType">
+    	<sequence>
+    		<element name="child" type="tns:childType" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="childType">
+        <attribute name="id" type="string" use="required"></attribute>
+    	<attribute name="age" type="string"></attribute>
+    </complexType>
+</schema>

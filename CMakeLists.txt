@@ -12,8 +12,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Point CMake where to look for module files.
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
-# Node editor use C++14
-set(CMAKE_CXX_STANDARD            14)
+# Node editor use C++20
+set(CMAKE_CXX_STANDARD            20)
 set(CMAKE_CXX_STANDARD_REQUIRED   YES)
 
 set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/external/imgui)
@@ -69,7 +69,11 @@ macro(add_example_executable name)
 
     find_package(imgui REQUIRED)
     find_package(imgui_node_editor REQUIRED)
-    target_link_libraries(${name} PRIVATE imgui imgui_node_editor application)
+    find_package(LibXml2 REQUIRED)
+    target_link_libraries(${name} PRIVATE imgui imgui_node_editor application xml2)
+    target_include_directories(${name} PRIVATE ${LIBXML2_INCLUDE_DIR})
+    target_include_directories(${name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/node_application)
+    target_compile_definitions(${name} PRIVATE TEST_DIR=${CMAKE_CURRENT_SOURCE_DIR}/example)
 
     set(_ExampleBinDir ${CMAKE_BINARY_DIR}/bin)
 

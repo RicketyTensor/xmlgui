@@ -8,4 +8,8 @@ add_example_executable(app
     drawing.cpp
     widgets.h
     widgets.cpp
+    xml/xml_reader.h
+    xml/xml_reader.cpp
+    node.h
+    node.cpp
 )
