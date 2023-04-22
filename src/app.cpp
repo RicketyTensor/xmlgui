@@ -18,6 +18,7 @@
 #include "node.h"
 #include "xml/xml_reader.h"
 
+#define TEST_DIR CMAKE_TEST_DIR
 
 static inline ImRect ImGui_GetItemRect()
 {
@@ -436,7 +437,7 @@ struct XMLGUI: public Application {
         ed::SetCurrentEditor(m_Editor);
 
         // Read XML
-        m_Nodes = xmlgui::XMLReader::read_xml("@MY_VAR@/test.xml");
+        m_Nodes = xmlgui::XMLReader::read_xml(std::string(TEST_DIR) + "/test.xml");
 
         // Node* node;
         // node = SpawnInputActionNode();      ed::SetNodePosition(node->ID, ImVec2(-252, 220));
