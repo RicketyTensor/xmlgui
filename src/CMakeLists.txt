@@ -12,4 +12,9 @@ add_example_executable(app
     widgets.cpp
     xml/xml_reader.h
     xml/xml_reader.cpp
+    xml/xsd_reader.h
+    xml/xsd_reader.cpp
+    xml/xsd_handler.h
+    xml/xsd_handler.cpp
+    utils/text.hpp
 )

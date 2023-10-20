@@ -437,7 +437,7 @@ struct XMLGUI: public Application {
         ed::SetCurrentEditor(m_Editor);
 
         // Read XML
-        m_Nodes = xmlgui::XMLReader::read_xml(std::string(TEST_DIR) + "/test.xml");
+        m_Nodes = xmlgui::XMLReader::read_xml(std::string(TEST_DIR) + "/test.xml", std::string(TEST_DIR) + "/schema.xsd");
 
         // Node* node;
         // node = SpawnInputActionNode();      ed::SetNodePosition(node->ID, ImVec2(-252, 220));
